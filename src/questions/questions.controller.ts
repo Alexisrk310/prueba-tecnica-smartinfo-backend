@@ -1,15 +1,20 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Post, Body, UseGuards } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
-import { CreateQuestionDto } from './dto/createQuestion.dto';
+import { Question } from './entities/question.entity';
 import { JwtAuthGuard } from '../auth/guards/jwtAuth.guard';
 
 @Controller('questions')
 export class QuestionsController {
-  constructor(private readonly questionsService: QuestionsService) {}
+  constructor(private questionsService: QuestionsService) {}
+
+  @Get()
+  async findAll(@Query('category') category: string): Promise<Question[]> {
+    return this.questionsService.findAll(category);
+  }
 
   @Post()
-  @UseGuards(JwtAuthGuard) // Protege esta ruta con JWT
-  async create(@Body() createQuestionDto: CreateQuestionDto) {
-    return this.questionsService.create(createQuestionDto);
+  @UseGuards(JwtAuthGuard)
+  async create(@Body() question: Question): Promise<Question> {
+    return this.questionsService.create(question);
   }
 }
