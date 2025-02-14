@@ -1,9 +1,22 @@
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import {
+  WebSocketGateway,
+  WebSocketServer,
+  SubscribeMessage,
+  MessageBody,
+} from '@nestjs/websockets';
+import { Server } from 'socket.io';
+import { ScoresService } from '../scores/scores.service';
 
 @WebSocketGateway()
 export class RankingGateway {
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
-    return 'Hello world!';
+  @WebSocketServer()
+  server: Server;
+
+  constructor(private scoresService: ScoresService) {}
+
+  @SubscribeMessage('updateRanking')
+  async handleMessage(@MessageBody() data: any): Promise<void> {
+    const ranking = await this.scoresService.getRanking();
+    this.server.emit('rankingUpdated', ranking);
   }
 }

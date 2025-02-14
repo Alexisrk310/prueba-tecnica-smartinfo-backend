@@ -10,8 +10,8 @@ import { JwtStrategy } from './strategies/jwtStrategy';
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET, // Clave secreta del entorno
-      signOptions: { expiresIn: '1h' }, // El token expira en 1 hora
+      secret: process.env.JWT_SECRET, 
+      signOptions: { expiresIn: '1h' }, 
     }),
     UsersModule,
   ],

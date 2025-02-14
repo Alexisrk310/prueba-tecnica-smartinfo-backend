@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { RankingGateway } from './ranking.gateway';
-import { RankingService } from './ranking.service';
+import { ScoresService } from '../scores/scores.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Score } from '../scores/entities/score.entity';
 
 @Module({
-  providers: [RankingGateway, RankingService]
+  imports: [TypeOrmModule.forFeature([Score])],
+  providers: [RankingGateway, ScoresService],
 })
 export class RankingModule {}
