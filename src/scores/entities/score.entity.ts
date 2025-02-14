@@ -1,5 +1,5 @@
+import { User } from 'src/users/entities/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Score {
@@ -11,4 +11,7 @@ export class Score {
 
   @ManyToOne(() => User, (user) => user.scores)
   user: User;
+
+  @Column() 
+  userId: number;
 }

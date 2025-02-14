@@ -1,15 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Score } from 'src/scores/entities/score.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   username: string;
+
+  @Column({ unique: true })
+  email: string;
 
   @Column()
   password: string;
-  @Column()
-  scores: number;
+
+  @OneToMany(() => Score, (score) => score.user)
+  scores: Score[];
 }

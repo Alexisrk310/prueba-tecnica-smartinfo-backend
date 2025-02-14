@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -19,24 +24,73 @@ export class UsersService {
     return user;
   }
 
+  async findOneByUsername(username: string): Promise<User | undefined> {
+    const user = await this.usersRepository.findOne({ where: { username } });
+    return user || undefined;
+  }
+
+  async findOneByEmail(email: string): Promise<User | undefined> {
+    const user = await this.usersRepository.findOne({ where: { email } });
+    return user || undefined;
+  }
+
   async create(userData: Partial<User>): Promise<User> {
-    if (!userData.password) {
-      throw new Error('La contraseña es obligatoria');
+    if (!userData.username || !userData.email || !userData.password) {
+      throw new BadRequestException(
+        'Faltan campos obligatorios: username, email o password',
+      );
+    }
+
+    const existingUsername = await this.findOneByUsername(userData.username);
+    if (existingUsername) {
+      throw new BadRequestException('El nombre de usuario ya está en uso');
+    }
+
+    const existingEmail = await this.findOneByEmail(userData.email);
+    if (existingEmail) {
+      throw new BadRequestException('El correo electrónico ya está en uso');
     }
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
+
     const newUser = this.usersRepository.create({
-      ...userData,
+      username: userData.username,
+      email: userData.email,
       password: hashedPassword,
     });
+
     return this.usersRepository.save(newUser);
   }
 
   async validateUser(username: string, password: string): Promise<User | null> {
-    const user = await this.usersRepository.findOne({ where: { username } });
-    if (user && (await bcrypt.compare(password, user.password))) {
-      return user;
+    const user = await this.findOneByUsername(username);
+
+    if (!user) {
+      throw new UnauthorizedException('Credenciales inválidas');
     }
-    return null;
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+
+    return user;
+  }
+  async validateUserByEmail(
+    email: string,
+    password: string,
+  ): Promise<User | null> {
+    const user = await this.findOneByEmail(email);
+
+    if (!user) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+
+    return user;
   }
 }
