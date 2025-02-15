@@ -17,11 +17,12 @@ async function bootstrap() {
     allowedHeaders: 'Authorization, Content-Type, access_token',
   });
   app.useWebSocketAdapter(new IoAdapter(app));
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Trivia API')
     .setDescription('API para el juego de trivia')
     .setVersion('1.0')
-    .addBearerAuth() // Para JWT
+    .addBearerAuth() 
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);

@@ -6,7 +6,13 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { ScoresService } from '../scores/scores.service';
-
+@WebSocketGateway({
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+})
 @WebSocketGateway()
 export class RankingGateway {
   @WebSocketServer()
