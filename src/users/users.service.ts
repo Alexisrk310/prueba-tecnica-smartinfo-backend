@@ -82,17 +82,19 @@ export class UsersService {
     email: string,
     password: string,
   ): Promise<User | null> {
-    const user = await this.findOneByEmail(email);
+    const user = await this.usersRepository.findOne({ where: { email } });
 
     if (!user) {
-      throw new UnauthorizedException('Credenciales inválidas');
+      return null;
     }
 
+    
     const isPasswordValid = await bcrypt.compare(password, user.password);
+
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Credenciales inválidas');
+      return null; 
     }
 
-    return user;
+    return user; 
   }
 }
