@@ -7,19 +7,22 @@ Este es el backend para una aplicación de trivia interactiva con ranking en tie
 ## Instalación
 
 1. **Clona el repositorio**:
+
    ```bash
    git clone https://github.com/tu-usuario/trivia-backend.git
    cd trivia-backend
    ```
 
 2. **Instala las dependencias**:
+
    ```bash
    npm install
    ```
 
 3. **Configura las variables de entorno**:
-   
+
    Crea un archivo `.env`:
+
    ```env
    DB_HOST=localhost
    DB_PORT=5432
@@ -52,6 +55,7 @@ src/
 ### Autenticación
 
 #### Registro de Usuario
+
 - **Método:** POST
 - **Ruta:** `/auth/register`
 - **Body:**
@@ -69,6 +73,7 @@ src/
   ```
 
 #### Inicio de Sesión
+
 - **Método:** POST
 - **Ruta:** `/auth/login`
 - **Body:**
@@ -88,6 +93,7 @@ src/
 ### Preguntas
 
 #### Obtener Preguntas por Categoría
+
 - **Método:** GET
 - **Ruta:** `/questions?category=geografía`
 - **Respuesta:**
@@ -104,6 +110,7 @@ src/
   ```
 
 #### Crear una Nueva Pregunta (Admin)
+
 - **Método:** POST
 - **Ruta:** `/questions`
 - **Body:**
@@ -129,6 +136,7 @@ src/
 ### Puntajes
 
 #### Enviar Puntaje
+
 - **Método:** POST
 - **Ruta:** `/scores`
 - **Body:**
@@ -147,6 +155,7 @@ src/
   ```
 
 #### Obtener Ranking Global
+
 - **Método:** GET
 - **Ruta:** `/scores/ranking`
 - **Respuesta:**
@@ -174,6 +183,7 @@ src/
 ### Ranking en Tiempo Real (WebSockets)
 
 #### Actualizar el Ranking
+
 - **Evento:** `updateRanking`
 - **Ruta:** `ws://localhost:3000`
 - **Respuesta:**
@@ -204,9 +214,11 @@ src/
 ## Ejecución en Desarrollo
 
 1. **Inicia la base de datos**:
+
    - Asegúrate de que PostgreSQL esté en ejecución.
 
 2. **Ejecuta la aplicación**:
+
    ```bash
    npm run start
    ```
@@ -214,12 +226,6 @@ src/
 3. **Prueba los endpoints**:
    - Usa herramientas como Postman o cURL para probar las rutas.
 
-## Contribución
+# Si vas a levantar Docker solo coloca este comando en tu terminal: docker-compose up --build -d
 
-1. Haz un fork del repositorio.
-2. Crea una rama para tu feature o corrección:
-   ```bash
-   git checkout -b nombre-de-tu-rama
-   ```
-3. Envía un pull request.
-
+# Si vas a levantar el sevidor de nest solo coloca este comando en tu terminal: npm run start:dev
