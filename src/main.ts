@@ -9,7 +9,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
 
-  // Configuración de Swagger (MOVERLO ANTES DE listen)
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    allowedHeaders: 'Authorization, Content-Type, access_token',
+  });
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Trivia API')
     .setDescription('API para el juego de trivia')

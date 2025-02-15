@@ -57,6 +57,7 @@ export class UsersService {
       username: userData.username,
       email: userData.email,
       password: hashedPassword,
+      isAdmin: userData.isAdmin || false, // Por defecto, no es administrador
     });
 
     return this.usersRepository.save(newUser);
@@ -76,6 +77,7 @@ export class UsersService {
 
     return user;
   }
+
   async validateUserByEmail(
     email: string,
     password: string,

@@ -17,4 +17,7 @@ export class User {
 
   @OneToMany(() => Score, (score) => score.user)
   scores: Score[];
+
+  @Column({ default: false }) 
+  isAdmin: boolean;
 }

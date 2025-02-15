@@ -7,7 +7,7 @@ import { UsersModule } from '../users/users.module';
 @Module({
   imports: [
     JwtModule.register({
-      secret: 'tu_clave_secreta_jwt',
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1h' },
     }),
     UsersModule,

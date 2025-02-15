@@ -7,7 +7,6 @@ import { QuestionsModule } from './questions/questions.module';
 import { ScoresModule } from './scores/scores.module';
 import { RankingModule } from './ranking/ranking.module';
 import { UsersModule } from './users/users.module';
-console.log('ADIOOSS');
 
 @Module({
   imports: [
